@@ -34,6 +34,7 @@ gnpn_model<-function(n,lambda){
   M
 }
 
+
 # Exercicio 2
 lambdas <- seq(1:5)
 N <- 100

@@ -54,7 +54,8 @@ positiva_5[j] <- sum(Xn[100,5]==+1)
 }
 sum(positiva==1)
 sum(positiva_5==1)
-# repetindo o experimento sucessivas vezes o ator 10 dará uma opinião positiva em 30/100 vezes
+# repetindo o experimento sucessivas vezes o ator 10 dará 
+#uma opinião positiva em 30/100 vezes
 
 grafos
 load(file="inicio.Rdata")
