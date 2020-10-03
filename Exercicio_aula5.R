@@ -4,6 +4,7 @@
 
 library(tidyverse)
 library(igraph)
+library(hrbrthemes)
 
 ### Simular varias vezes G(N,p), com N=100
 
@@ -51,14 +52,20 @@ for(i in 1:R){
 
 save(Ca,file = "Coeficientes de Aglomeracao.Rdata")
 
-ggplot( aes(x=coef_agl)) +
-  geom_histogram( binwidth=3, fill="#69b3a2", color="#e9ecef", alpha=0.9) +
-  ggtitle("Bin size = 3") +
+ggplot(data=Ca, aes(x= `p=0.9`))+
+geom_histogram(binwidth=0.001, fill="#69b3a2", color="#e9ecef")+
+ggtitle("G(100,0.9)") + 
+  xlab("Coeficientes de Aglomeração")+ 
+  ylab("Frequência")+
   theme_ipsum() +
-  theme(
-    plot.title = element_text(size=15)
-  )
-
+  theme(plot.title = element_text(size=15), axis.title.x=element_text(size=13),
+        axis.title.y=element_text(size=13))
+  
 #transitivity(grafo1, type="local")  #Ci of each vertex
 #transitivity(grafo1, type="localaverage") #average Ci
+
+######
+diameter(graph, directed = TRUE, unconnected = TRUE, weights = NULL)
+
+
 
