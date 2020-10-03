@@ -1,5 +1,7 @@
 
 library(igraph)
+library(tidyverse)
+library(animation)
 
 # Modelo G(n,p)
 gnp_model<-function(n,p){
@@ -34,18 +36,38 @@ gnpn_model<-function(n,lambda){
   M
 }
 
-
 # Exercicio 2
-lambdas <- seq(1:5)
+lambdas <- seq(1:6)
 N <- 100
 grafos_ErdosR <- list()
 for(i in 1:length(lambdas)){
-     grafos_ErdosR[[i]] <- gnpn_model(N,lambdas[i])
+     grafos_ErdosR[[i]] <- gnpn_model(N,lambdas[i]) %>% graph_from_adjacency_matrix(mode="undirected")
 }
 
 
 
+L <- layout.fruchterman.reingold(grafos_ErdosR[[1]])
 
+ani.options(interval=1)
+saveGIF({
+  count =0
+  for(i in 1:length(grafos_ErdosR)){
+    plot(grafos_ErdosR[[i]], layout = L,
+         vertex.label = NA,
+         vertex.size = 5,
+         vertex.color= V(grafos_ErdosR[[1]])$color,
+         vertex.frame.color= "white",
+         edge.arrow.size = 1,
+         edge.color=E(grafos_ErdosR[[1]])$color)
+    count = count +1
+    title(main="Graph G(N,p) simulation example", 
+          sub=paste("Lambda = ",count), cex.main = 3, cex.sub = 2)
+  }
+}, interval = 1, movie.name = "demo.gif", ani.width = 1000, ani.height = 1000
+
+)
+
+# Quanto maior o lambda mais concetado será o grafo.
 
 # Exercicio 3
 
@@ -98,6 +120,7 @@ gnpn_model<-function(n,lambda){
         
       } else{
         M[i,j] <- 0
+        M[j,i] <- 0
       }
     }
   }
@@ -121,8 +144,9 @@ Xn <- matrix(0,nrow = t,ncol = N)
 An <- c()
 opin <- c()
 
-atores <- seq(1:N)
 g1 <- g2
+
+atores <- seq(1:N)
 Xn[1,] <- t(X0)
 for(i in 1:t){
   set.seed(i*123)
@@ -176,19 +200,23 @@ for(i in 1:t){
 }
 
 dados <- tibble(tempo=c(seq(1:t)),positiva=c(rep(0,t)),negativa=c(rep(0,t)))
-dados1 <- reshape2::melt(dados,id="tempo",measure.vars = c("positiva", "negativa"))
 
 for(k in 1:t){
   dados[k,2] <- sum(Xn[k,]==1)
   dados[k,3] <- sum(Xn[k,]== -1)
 }
 
+
+
+dados1 <- reshape2::melt(dados,id="tempo",measure.vars = c("positiva", "negativa"))
+
+
 ggplot(dados1, aes(x=tempo,y=value, color=variable))+
   geom_line(size=1)+ ylab("Frequência") +xlab("Tempo")+
   theme_bw()+
-  ggtitle("Lambda 0.5")+
+  ggtitle("Lambda 5")+
   theme(legend.position ="bottom", legend.title=element_blank(),
         axis.text=element_text(size=12, face="bold", colour="gray24"), # modifica os textos dos eixos
         axis.title=element_text(size=12,face="bold"))
 
-
+# Tanto o grafo G(N,p_n) com labda 0.5 quanto com o lambda 5 não convergiram para o consenso
