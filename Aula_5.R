@@ -66,4 +66,19 @@ ggtitle("G(100,0.9)") +
 ######
 diameter(a, directed = FALSE, unconnected = FALSE, weights = NULL)
 
-plot(a)
+#<>-------------------------------------------------------------------
+
+# Diamentro de um grafo regular 
+
+grafo_regular <- graph.formula(1++2,2++3,3++4,4++5,5++6,6++7,7++8,8++9,9++10,1++10,simplify = TRUE) 
+diameter(grafo_regular, directed = FALSE, unconnected = FALSE, weights = NULL)
+transitivity(grafo_regular, type="local") #average Ci
+
+
+
+
+
+
+
+
+
