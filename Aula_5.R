@@ -36,7 +36,6 @@ Ca <- tibble(         # matriz que guardará todos os coeficientes de algomeraç
   "p=0.9" = rep(0, R),
 )
 
-
 for(j in 1:length(p)){
   grafos <- list()
   coef_agl <- c()
@@ -61,11 +60,25 @@ ggtitle("G(100,0.9)") +
   theme(plot.title = element_text(size=15), axis.title.x=element_text(size=13),
         axis.title.y=element_text(size=13))
   
-#transitivity(grafo1, type="local")  #Ci of each vertex
-#transitivity(grafo1, type="localaverage") #average Ci
+#cis <- transitivity(a, type="local")  #Ci of each vertex
+#transitivity(a, type="localaverage") #average Ci
 
 ######
-diameter(graph, directed = TRUE, unconnected = TRUE, weights = NULL)
+diameter(a, directed = FALSE, unconnected = FALSE, weights = NULL)
+
+#<>-------------------------------------------------------------------
+
+# Diamentro de um grafo regular 
+
+grafo_regular <- graph.formula(1++2,2++3,3++4,4++5,5++6,6++7,7++8,8++9,9++10,1++10,simplify = TRUE) 
+diameter(grafo_regular, directed = FALSE, unconnected = FALSE, weights = NULL)
+transitivity(grafo_regular, type="local") #average Ci
+
+
+
+
+
+
 
 
 
